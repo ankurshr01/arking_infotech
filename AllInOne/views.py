@@ -6,7 +6,6 @@ from django.contrib.auth import update_session_auth_hash
 from AllInOne.forms import RegisterForm
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
-from payments import get_payment_model, RedirectNeeded
 
 
 def Home(request):
@@ -26,6 +25,7 @@ def Login(request):
 	if request.method == 'POST':
 		form = AuthenticationForm(data=request.POST)
 		if form.is_valid():
+			print("jvg")
 			user = form.get_user()
 			login(request, user)
 			return render(request, 'AllInOne/home.html')
@@ -47,11 +47,8 @@ def ChangePassword(request):
 			user = form.save()
 			update_session_auth_hash(request, user)
 			return redirect('/AllInOne/')
-
 	else:
 		form = PasswordChangeForm(request.user)
-
-	
 	return render(request, 'AllInOne/changepassword.html', {'form':form})
 
 
